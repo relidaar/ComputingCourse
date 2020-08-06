@@ -104,6 +104,7 @@ class TwentyFortyEight:
         """
         offset = OFFSETS[direction]
         init = self.initial_tiles[direction]
+        changed = False
         for tile in init:
             temp = []
             row = tile[0]
@@ -117,10 +118,12 @@ class TwentyFortyEight:
             row = tile[0]
             col = tile[1]
             while 0 <= row < self.height and 0 <= col < self.width:
+                if self.grid[row][col] != temp[index]: changed = True
                 self.grid[row][col] = temp[index]
                 row += offset[0]
                 col += offset[1]
                 index += 1
+        if changed: self.new_tile()
 
     def new_tile(self):
         """
