@@ -51,14 +51,14 @@ class TwentyFortyEight:
 
     def __init__(self, grid_height, grid_width):
         self.grid = []
-        self.width = grid_width
-        self.height = grid_height
+        self.grid_width = grid_width
+        self.grid_height = grid_height
         self.reset()
         self.initial_tiles = {
-            UP: [(0, c) for c in range(self.width)],
-            DOWN: [(self.height - 1, c) for c in range(self.width)],
-            LEFT: [(r, 0) for r in range(self.height)],
-            RIGHT: [(r, self.width - 1) for r in range(self.height)],
+            UP: [(0, c) for c in range(self.grid_width)],
+            DOWN: [(self.grid_height - 1, c) for c in range(self.grid_width)],
+            LEFT: [(r, 0) for r in range(self.grid_height)],
+            RIGHT: [(r, self.grid_width - 1) for r in range(self.grid_height)],
         }
 
     def reset(self):
@@ -67,9 +67,9 @@ class TwentyFortyEight:
         initial tiles.
         """
         self.grid = []
-        for row in range(self.height):
+        for row in range(self.grid_height):
             self.grid.append([])
-            for col in range(self.width):
+            for _ in range(self.grid_width):
                 self.grid[row].append(0)
         self.new_tile()
         self.new_tile()
@@ -78,24 +78,24 @@ class TwentyFortyEight:
         """
         Return a string representation of the grid for debugging.
         """
-        st = ""
-        for row in range(self.height):
-            st += '\n'
-            for col in range(self.width):
-                st += str(self.grid[row][col])
-        return st
+        return_string = ""
+        for row in range(self.grid_height):
+            return_string += '\n'
+            for col in range(self.grid_width):
+                return_string += str(self.grid[row][col])
+        return return_string
 
     def get_grid_height(self):
         """
         Get the height of the board.
         """
-        return self.height
+        return self.grid_height
 
     def get_grid_width(self):
         """
         Get the width of the board.
         """
-        return self.width
+        return self.grid_width
 
     def move(self, direction):
         """
@@ -109,7 +109,7 @@ class TwentyFortyEight:
             temp = []
             row = tile[0]
             col = tile[1]
-            while 0 <= row < self.height and 0 <= col < self.width:
+            while 0 <= row < self.grid_height and 0 <= col < self.grid_width:
                 temp.append(self.grid[row][col])
                 row += offset[0]
                 col += offset[1]
@@ -117,13 +117,15 @@ class TwentyFortyEight:
             index = 0
             row = tile[0]
             col = tile[1]
-            while 0 <= row < self.height and 0 <= col < self.width:
-                if self.grid[row][col] != temp[index]: changed = True
+            while 0 <= row < self.grid_height and 0 <= col < self.grid_width:
+                if self.grid[row][col] != temp[index]:
+                    changed = True
                 self.grid[row][col] = temp[index]
                 row += offset[0]
                 col += offset[1]
                 index += 1
-        if changed: self.new_tile()
+        if changed:
+            self.new_tile()
 
     def new_tile(self):
         """
@@ -131,12 +133,12 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        row = random.randrange(self.height)
-        col = random.randrange(self.width)
+        row = random.randrange(self.grid_height)
+        col = random.randrange(self.grid_width)
 
         while self.grid[row][col] != 0:
-            row = random.randrange(self.height)
-            col = random.randrange(self.width)
+            row = random.randrange(self.grid_height)
+            col = random.randrange(self.grid_width)
 
         self.grid[row][col] = 4 if random.randint(1, 100) >= 90 else 2
 
