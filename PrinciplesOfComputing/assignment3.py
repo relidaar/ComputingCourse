@@ -23,7 +23,23 @@ def mc_trial(board, player):
 
 
 def mc_update_scores(scores, board, player):
-    pass
+    result = board.check_win()
+    score_x = 0
+    score_o = 0
+    if result == provided.PLAYERX:
+        score_x = 1
+        score_o = -1
+    elif result == provided.PLAYERO:
+        score_x = -1
+        score_o = 1
+
+    size = board.get_dim()
+    for row in range(size):
+        for col in range(size):
+            if board.square(row, col) == provided.PLAYERX:
+                scores[row][col] += score_x
+            if board.square(row, col) == provided.PLAYERO:
+                scores[row][col] += score_o
 
 
 def get_best_move(board, scores):
@@ -35,7 +51,6 @@ def get_best_move(board, scores):
 
 def mc_move(board, player, trials):
     pass
-
 
 # Test game with the console or the GUI.  Uncomment whichever
 # you prefer.  Both should be commented out when you submit
