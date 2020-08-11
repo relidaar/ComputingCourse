@@ -16,41 +16,71 @@ SCORE_OTHER = 1.0  # Score for squares played by the other player
 
 # Add your functions here.
 def mc_trial(board, player):
-    while not board.check_win():
-        square = random.choice(board.get_empty_squares())
+    '''
+    :param board: current game board
+    :param player: current player
+    :return: None
+    '''
+    empty_squares = board.get_empty_squares()
+    while empty_squares:
+        square = random.choice(empty_squares)
         board.move(square[0], square[1], player)
+        empty_squares.remove(square)
+        if board.check_win():
+            break
         player = provided.switch_player(player)
 
 
 def mc_update_scores(scores, board, player):
-    result = board.check_win()
-    score_x = 0
-    score_o = 0
-    if result == provided.PLAYERX:
-        score_x = 1
-        score_o = -1
-    elif result == provided.PLAYERO:
-        score_x = -1
-        score_o = 1
-
+    '''
+    :param scores: current game scores
+    :param board: current game board
+    :param player: current player
+    :return: None
+    '''
+    winner = board.check_win()
     size = board.get_dim()
     for row in range(size):
         for col in range(size):
-            if board.square(row, col) == provided.PLAYERX:
-                scores[row][col] += score_x
-            if board.square(row, col) == provided.PLAYERO:
-                scores[row][col] += score_o
+            square = board.square(row, col)
+            if square == provided.PLAYERX:
+                if winner == provided.PLAYERX:
+                    scores[row][col] += SCORE_CURRENT
+                elif winner == provided.PLAYERO:
+                    scores[row][col] += -SCORE_OTHER
+            elif square == provided.PLAYERO:
+                if winner == provided.PLAYERX:
+                    scores[row][col] += -SCORE_CURRENT
+                elif winner == provided.PLAYERO:
+                    scores[row][col] += SCORE_OTHER
 
 
 def get_best_move(board, scores):
-    empty = board.get_empty_squares()
-    max_score = max([scores[r][c] for r, c in empty])
-    moves = [(r, c) for r, c in empty if scores[r][c] == max_score]
+    '''
+    :param board: current game board
+    :param scores: current game scores
+    :return: move in the form of (row, column)
+    '''
+    empty_squares = board.get_empty_squares()
+    max_score = max([scores[r][c] for r, c in empty_squares])
+    moves = [(r, c) for r, c in empty_squares if scores[r][c] == max_score]
     return random.choice(moves)
 
 
 def mc_move(board, player, trials):
-    pass
+    '''
+    :param board: current game board
+    :param player: current player
+    :param trials: number of game trials
+    :return: move in the form of (row, column)
+    '''
+    size = board.get_dim()
+    scores = [[0 for _ in range(size)] for _ in range(size)]
+    for _ in range(trials):
+        cloned = board.clone()
+        mc_trial(cloned, player)
+        mc_update_scores(scores, cloned, player)
+    return get_best_move(board, scores)
 
 # Test game with the console or the GUI.  Uncomment whichever
 # you prefer.  Both should be commented out when you submit
