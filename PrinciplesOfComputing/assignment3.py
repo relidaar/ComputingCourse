@@ -16,7 +16,10 @@ SCORE_OTHER = 1.0  # Score for squares played by the other player
 
 # Add your functions here.
 def mc_trial(board, player):
-    pass
+    while not board.check_win():
+        square = random.choice(board.get_empty_squares())
+        board.move(square[0], square[1], player)
+        player = provided.switch_player(player)
 
 
 def mc_update_scores(scores, board, player):
