@@ -24,6 +24,10 @@ def mc_update_scores(scores, board, player):
 
 
 def get_best_move(board, scores):
+    empty = board.get_empty_squares()
+    max_score = max([scores[r][c] for r, c in empty])
+    moves = [(r, c) for r, c in empty if scores[r][c] == max_score]
+    return random.choice(moves)
 
 
 def mc_move(board, player, trials):
