@@ -2,7 +2,7 @@ import unittest
 from .. import merge_2048
 
 
-class Test4048Merge(unittest.TestCase):
+class Test2048Merge(unittest.TestCase):
     def test_arranging(self):
         self.assertEqual([2, 0], merge_2048.arrange([0, 2]))
         self.assertEqual([2, 0, 0], merge_2048.arrange([0, 2, 0]))
