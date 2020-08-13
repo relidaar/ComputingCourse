@@ -11,8 +11,8 @@ except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
     import SimpleGUICS2Pygame.codeskulptor as codeskulptor
 
-import lib.poc_ttt_gui as gui
-import lib.poc_ttt_provided as provided
+import libs.poc_ttt_gui as gui
+import libs.poc_ttt_provided as provided
 
 # Constants for Monte Carlo simulator
 # You may change the values of these constants as desired, but
