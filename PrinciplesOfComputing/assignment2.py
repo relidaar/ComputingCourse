@@ -2,7 +2,7 @@
 Clone of 2048 game.
 """
 
-import poc_2048_gui
+import lib.poc_2048_gui as poc_2048_gui
 import random
 
 # Directions, DO NOT MODIFY

@@ -3,8 +3,16 @@ Monte Carlo Tic-Tac-Toe Player
 """
 
 import random
-import poc_ttt_gui
-import poc_ttt_provided as provided
+
+try:
+    import simplegui
+    import codeskulptor
+except ImportError:
+    import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
+    import SimpleGUICS2Pygame.codeskulptor as codeskulptor
+
+import lib.poc_ttt_gui as gui
+import lib.poc_ttt_provided as provided
 
 # Constants for Monte Carlo simulator
 # You may change the values of these constants as desired, but
@@ -82,9 +90,10 @@ def mc_move(board, player, trials):
         mc_update_scores(scores, cloned, player)
     return get_best_move(board, scores)
 
+
 # Test game with the console or the GUI.  Uncomment whichever
 # you prefer.  Both should be commented out when you submit
 # for testing to save time.
 
-# provided.play_game(mc_move, NTRIALS, False)
-# poc_ttt_gui.run_gui(3, provided.PLAYERX, mc_move, NTRIALS, False)
+#provided.play_game(mc_move, NTRIALS, False)
+gui.run_gui(3, provided.PLAYERX, mc_move, NTRIALS, False)
