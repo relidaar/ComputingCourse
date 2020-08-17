@@ -109,15 +109,13 @@ class TwentyFortyEight:
         """
         Get the height of the board.
         """
-        # replace with your code
-        return 0
+        return self.height
 
     def get_grid_width(self):
         """
         Get the width of the board.
         """
-        # replace with your code
-        return 0
+        self.width
 
     def move(self, direction):
         """
