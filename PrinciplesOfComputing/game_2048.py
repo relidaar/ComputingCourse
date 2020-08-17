@@ -96,7 +96,7 @@ class TwentyFortyEight:
         Reset the game so the grid is empty except for two
         initial tiles.
         """
-        self.board = [[0 for _ in range(self.height)] for _ in range(self.width)]
+        self.board = [[0 for _ in range(self.width)] for _ in range(self.height)]
         self.new_tile()
         self.new_tile()
 
@@ -104,8 +104,8 @@ class TwentyFortyEight:
         """
         Return a string representation of the grid for debugging.
         """
-        return '\n'.join([' '.join([str(self.get_tile(row, col)) for col in range(self.height)])
-                          for row in range(self.width)]) + '\n'
+        return '\n'.join([' '.join([str(self.get_tile(row, col)) for col in range(self.width)])
+                          for row in range(self.height)]) + '\n'
 
     def get_grid_height(self):
         """
@@ -133,7 +133,7 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        empty_tiles = [(row, col) for col in range(self.height) for row in range(self.width)
+        empty_tiles = [(row, col) for col in range(self.width) for row in range(self.height)
                        if self.get_tile(row, col) == 0]
         pos = random.choice(empty_tiles)
         if random.randint(1, 10) < 10:
@@ -145,14 +145,15 @@ class TwentyFortyEight:
         """
         Set the tile at position row, col to have the given value.
         """
-        if 0 <= row < self.width and 0 <= col < self.height:
+        if 0 <= row < self.height and 0 <= col < self.width:
             self.board[row][col] = value
 
     def get_tile(self, row, col):
         """
         Return the value of the tile at position row, col.
         """
-        if 0 <= row < self.width and 0 <= col < self.height:
+        if 0 <= row < self.height and 0 <= col < self.width:
             return self.board[row][col]
 
-# poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
+
+poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
