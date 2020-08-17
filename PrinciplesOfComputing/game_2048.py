@@ -4,11 +4,6 @@ Clone of 2048 game.
 
 import random
 
-try:
-    import poc_2048_gui
-except ImportError:
-    from libs import poc_2048_gui
-
 # Directions, DO NOT MODIFY
 UP = 1
 DOWN = 2
@@ -86,17 +81,23 @@ class TwentyFortyEight:
     """
 
     def __init__(self, grid_height, grid_width):
-        self.width = grid_width
-        self.height = grid_height
-        self.board = [[]]
+        self._width = grid_width
+        self._height = grid_height
+        self._board = [[]]
         self.reset()
+        self._initial_tiles = {
+            UP: [(0, col) for col in range(grid_width)],
+            DOWN: [(grid_height - 1, col) for col in range(grid_width)],
+            LEFT: [(row, 0) for row in range(grid_height)],
+            RIGHT: [(row, grid_width - 1) for row in range(grid_height)],
+        }
 
     def reset(self):
         """
         Reset the game so the grid is empty except for two
         initial tiles.
         """
-        self.board = [[0 for _ in range(self.width)] for _ in range(self.height)]
+        self._board = [[0 for _ in range(self._width)] for _ in range(self._height)]
         self.new_tile()
         self.new_tile()
 
@@ -104,28 +105,54 @@ class TwentyFortyEight:
         """
         Return a string representation of the grid for debugging.
         """
-        return '\n'.join([' '.join([str(self.get_tile(row, col)) for col in range(self.width)])
-                          for row in range(self.height)]) + '\n'
+        board = ""
+        for row in range(self._height):
+            board += '\n'
+            for col in range(self._width):
+                board += str(self._board[row][col])
+        return board
 
     def get_grid_height(self):
         """
         Get the height of the board.
         """
-        return self.height
+        return self._height
 
     def get_grid_width(self):
         """
         Get the width of the board.
         """
-        return self.width
+        return self._width
 
     def move(self, direction):
         """
         Move all tiles in the given direction and add
         a new tile if any tiles moved.
         """
-        # replace with your code
-        pass
+        offset = OFFSETS[direction]
+        init = self._initial_tiles[direction]
+        changed = False
+        for initial_tile in init:
+            row = initial_tile[0]
+            col = initial_tile[1]
+            line = []
+            while 0 <= row < self._height and 0 <= col < self._width:
+                line.append(self.get_tile(row, col))
+                row += offset[0]
+                col += offset[1]
+            line = merge(line)
+            row = initial_tile[0]
+            col = initial_tile[1]
+            index = 0
+            while 0 <= row < self._height and 0 <= col < self._width:
+                if self._board[row][col] != line[index]:
+                    changed = True
+                self._board[row][col] = line[index]
+                row += offset[0]
+                col += offset[1]
+                index += 1
+        if changed:
+            self.new_tile()
 
     def new_tile(self):
         """
@@ -133,27 +160,30 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        empty_tiles = [(row, col) for col in range(self.width) for row in range(self.height)
+        empty_tiles = [(row, col) for col in range(self._width) for row in range(self._height)
                        if self.get_tile(row, col) == 0]
         pos = random.choice(empty_tiles)
         if random.randint(1, 10) < 10:
-            self.board[pos[0]][pos[1]] = 2
+            self._board[pos[0]][pos[1]] = 2
         else:
-            self.board[pos[0]][pos[1]] = 4
+            self._board[pos[0]][pos[1]] = 4
 
     def set_tile(self, row, col, value):
         """
         Set the tile at position row, col to have the given value.
         """
-        if 0 <= row < self.height and 0 <= col < self.width:
-            self.board[row][col] = value
+        if 0 <= row < self._height and 0 <= col < self._width:
+            self._board[row][col] = value
 
     def get_tile(self, row, col):
         """
         Return the value of the tile at position row, col.
         """
-        if 0 <= row < self.height and 0 <= col < self.width:
-            return self.board[row][col]
+        if 0 <= row < self._height and 0 <= col < self._width:
+            return self._board[row][col]
 
-
-poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
+# try:
+#     import poc_2048_gui
+# except ImportError:
+#     from libs import poc_2048_gui
+# poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
