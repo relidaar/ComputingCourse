@@ -92,70 +92,14 @@ class SolitaireMancala:
         return moves
 
 
-# Create tests to check the correctness of your code
-
-def test_apply_move(game, config, move, expected):
-    game.set_board(config)
-    print 'Game board:', str(game)
-    print 'Move:', move
-    game.apply_move(move)
-    print "Testing apply_move - Computed:", str(game), "Expected:", str(expected)
-    print
-
-
-def test_is_game_won(game, config, expected):
-    game.set_board(config)
-    print 'Game board:', str(game)
-    print "Testing is_game_won - Computed:", game.is_game_won(), "Expected:", expected
-    print
-
-
-def test_mancala():
-    """
-    Test code for Solitaire Mancala
-    """
-
-    my_game = SolitaireMancala()
-    print "Testing init - Computed:", my_game, "Expected: [0]"
-
-    config1 = [0, 0, 1, 1, 3, 5, 0]
-    config2 = [1, 0, 0, 0, 0, 0, 0]
-
-    my_game.set_board(config1)
-    print "Testing set_board - Computed:", str(my_game), "Expected:", str([0, 5, 3, 1, 1, 0, 0])
-    print
-
-    print "Testing get_num_seeds - Computed:", my_game.get_num_seeds(1), "Expected:", config1[1]
-    print "Testing get_num_seeds - Computed:", my_game.get_num_seeds(3), "Expected:", config1[3]
-    print "Testing get_num_seeds - Computed:", my_game.get_num_seeds(5), "Expected:", config1[5]
-    print
-
-    print "Testing is_legal_move(-1) - Computed:", my_game.is_legal_move(-1), "Expected:", False
-    print "Testing is_legal_move(0) - Computed:", my_game.is_legal_move(0), "Expected:", False
-    print "Testing is_legal_move(1) - Computed:", my_game.is_legal_move(1), "Expected:", False
-    print "Testing is_legal_move(7) - Computed:", my_game.is_legal_move(7), "Expected:", False
-    print "Testing is_legal_move(2) - Computed:", my_game.is_legal_move(2), "Expected:", True
-    print
-
-    print '----Test test_apply_move----'
-    test_apply_move(my_game, config1, -1, config1[::-1])
-    test_apply_move(my_game, config1, 0, config1[::-1])
-    test_apply_move(my_game, config1, 1, config1[::-1])
-    test_apply_move(my_game, config1, 7, config1[::-1])
-    test_apply_move(my_game, config1, 2, [0, 5, 3, 1, 0, 1, 0])
-
-    print '----Test is_game_won----'
-    test_is_game_won(my_game, config1, False)
-    test_is_game_won(my_game, config2, True)
-
-
-test_mancala()
-
 # Import GUI code once you feel your code is correct
 
 try:
     import poc_mancala_gui
+    import mancala_test
 except ImportError:
     from libs import poc_mancala_gui
+    from tests import mancala_test
 
-poc_mancala_gui.run_gui(SolitaireMancala())
+# poc_mancala_gui.run_gui(SolitaireMancala())
+mancala_test.run_suite(SolitaireMancala)
