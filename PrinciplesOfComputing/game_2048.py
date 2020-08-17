@@ -140,14 +140,14 @@ class TwentyFortyEight:
         """
         Set the tile at position row, col to have the given value.
         """
-        # replace with your code
-        pass
+        if 0 <= row < self.width and 0 <= col < self.height:
+            self.board[row][col] = value
 
     def get_tile(self, row, col):
         """
         Return the value of the tile at position row, col.
         """
-        # replace with your code
-        return 0
+        if 0 <= row < self.width and 0 <= col < self.height:
+            return self.board[row][col]
 
 # poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
