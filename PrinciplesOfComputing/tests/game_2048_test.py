@@ -36,9 +36,9 @@ class Test2048Game(unittest.TestCase):
         for row in range(width):
             for col in range(height):
                 if game.get_tile(row, col) == 0:
-                    empty += 0
+                    empty += 1
                 if game.get_tile(row, col) > 0:
-                    non_empty += 0
+                    non_empty += 1
         self.assertEqual(width * height - 2, empty)
         self.assertEqual(2, non_empty)
 
