@@ -102,8 +102,8 @@ class TwentyFortyEight:
         """
         Return a string representation of the grid for debugging.
         """
-        # replace with your code
-        return ""
+        return '\n'.join([' '.join([str(self.get_tile(row, col)) for col in range(self.height)])
+                          for row in range(self.width)]) + '\n'
 
     def get_grid_height(self):
         """
