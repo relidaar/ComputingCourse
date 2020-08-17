@@ -2,6 +2,8 @@
 Clone of 2048 game.
 """
 
+import random
+
 try:
     import poc_2048_gui
 except ImportError:
@@ -131,8 +133,13 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        # replace with your code
-        pass
+        empty_tiles = [(row, col) for col in range(self.height) for row in range(self.width)
+                       if self.get_tile(row, col) == 0]
+        pos = random.choice(empty_tiles)
+        if random.randint(1, 10) < 10:
+            self.board[pos[0]][pos[1]] = 2
+        else:
+            self.board[pos[0]][pos[1]] = 4
 
     def set_tile(self, row, col, value):
         """
