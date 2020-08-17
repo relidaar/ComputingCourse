@@ -31,6 +31,11 @@ class GUI:
     def __init__(self, game):
         self._rows = game.get_grid_height()
         self._cols = game.get_grid_width()
+        self._game = game
+        url = codeskulptor.file2url(IMAGENAME)
+        self._tiles = simplegui.load_image(url)
+        self._directions = {"up": UP, "down": DOWN,
+                            "left": LEFT, "right": RIGHT}
         self._frame = simplegui.create_frame('2048',
                                              self._cols * TILE_SIZE + 2 * BORDER_SIZE,
                                              self._rows * TILE_SIZE + 2 * BORDER_SIZE)
@@ -39,11 +44,6 @@ class GUI:
         self._frame.set_draw_handler(self.draw)
         self._frame.set_canvas_background("#BCADA1")
         self._frame.start()
-        self._game = game
-        url = codeskulptor.file2url(IMAGENAME)
-        self._tiles = simplegui.load_image(url)
-        self._directions = {"up": UP, "down": DOWN,
-                            "left": LEFT, "right": RIGHT}
 
     def keydown(self, key):
         """
