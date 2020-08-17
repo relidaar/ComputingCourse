@@ -15,13 +15,13 @@ class Test2048Game(unittest.TestCase):
 
     def test_get_width_height(self):
         width, height = 4, 4
-        game = game_2048.TwentyFortyEight(width, height)
+        game = game_2048.TwentyFortyEight(height, width)
         self.assertEqual(width, game.get_grid_width())
         self.assertEqual(height, game.get_grid_height())
 
     def test_get_set_tile(self):
         width, height = 4, 4
-        game = game_2048.TwentyFortyEight(width, height)
+        game = game_2048.TwentyFortyEight(height, width)
 
         row, col, value = 0, 0, 2
         game.set_tile(row, col, value)
@@ -29,12 +29,12 @@ class Test2048Game(unittest.TestCase):
 
     def test_reset(self):
         width, height = 4, 4
-        game = game_2048.TwentyFortyEight(width, height)
+        game = game_2048.TwentyFortyEight(height, width)
         game.reset()
         empty = 0
         non_empty = 0
-        for row in range(width):
-            for col in range(height):
+        for row in range(height):
+            for col in range(width):
                 if game.get_tile(row, col) == 0:
                     empty += 1
                 if game.get_tile(row, col) > 0:
@@ -48,8 +48,10 @@ class Test2048Game(unittest.TestCase):
         for row in range(width):
             for col in range(height):
                 game.set_tile(row, col, 1)
-        expected = '1 1 1 1\n' \
-                   '1 1 1 1\n' \
-                   '1 1 1 1\n' \
-                   '1 1 1 1\n'
-        self.assertEqual(expected, str(game))
+        expected = [
+            1, 1, 1, 1,
+            1, 1, 1, 1,
+            1, 1, 1, 1,
+            1, 1, 1, 1,
+        ]
+        self.assertEqual(expected, [game.get_tile(row, col) for col in range(width) for row in range(height)])
