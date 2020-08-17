@@ -115,7 +115,7 @@ class TwentyFortyEight:
         """
         Get the width of the board.
         """
-        self.width
+        return self.width
 
     def move(self, direction):
         """
