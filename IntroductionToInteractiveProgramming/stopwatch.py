@@ -90,6 +90,12 @@ frame.add_button('Reset', reset, BUTTON_SIZE)
 timer = simplegui.create_timer(INTERVAL, tick)
 
 # start frame
-frame.start()
+# frame.start()
 
 # Please remember to review the grading rubric
+try:
+    import mancala_test
+except ImportError:
+    from tests import stopwatch_test
+
+stopwatch_test.run_suite(format)
