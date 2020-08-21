@@ -20,14 +20,41 @@ SCORE_OTHER = 1.0  # Score for squares played by the other player
 
 # Add your functions here.
 def mc_trial(board, player):
+    '''
+    Simulates a TicTacToe game
+    :param board: game board
+    :param player: current player
+    :return: None
+    '''
     while not board.check_win():
         move = random.choice(board.get_empty_squares())
         board.move(move[0], move[1], player)
-        player = provided.PLAYERX if player == provided.PLAYERO else provided.PLAYERO
+        provided.switch_player(player)
 
 
 def mc_update_scores(scores, board, player):
-    pass
+    '''
+    Updates total scores
+    :param scores: total scores
+    :param board: game board
+    :param player: current player
+    :return: None
+    '''
+    other = provided.PLAYERO if player == provided.PLAYERX else provided.PLAYERX
+    if player == board.check_win():
+        score_current = SCORE_CURRENT
+        score_other = -SCORE_OTHER
+    else:
+        score_current = -SCORE_CURRENT
+        score_other = SCORE_OTHER
+    dim = board.get_dim()
+    for row in range(dim):
+        for col in range(dim):
+            square = board.square(row, col)
+            if square == player:
+                scores[row][col] += score_current
+            if square == other:
+                scores[row][col] += score_other
 
 
 def get_best_move(board, scores):
@@ -35,6 +62,13 @@ def get_best_move(board, scores):
 
 
 def mc_move(board, player, trials):
+    '''
+    Uses Monte Carlo method for calculating the best move
+    :param board: game board
+    :param player: current player
+    :param trials: number of trials to do
+    :return: indices (row, col) of board square as move
+    '''
     dim = range(board.get_dim())
     scores = [[0 for _ in dim] for _ in dim]
     current_board = board.clone()
@@ -43,7 +77,6 @@ def mc_move(board, player, trials):
         mc_trial(current_board, player)
         mc_update_scores(scores, current_board, player)
     return get_best_move(current_board, scores)
-
 
 # Test game with the console or the GUI.  Uncomment whichever
 # you prefer.  Both should be commented out when you submit
