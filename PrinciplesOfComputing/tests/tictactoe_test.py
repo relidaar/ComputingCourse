@@ -60,6 +60,22 @@ class Test2048Game(unittest.TestCase):
         tictactoe.mc_update_scores(scores, board, provided.PLAYERO)
         self.assertEqual(expected, scores)
 
+    def test_get_best_move(self):
+        board = [
+            [provided.EMPTY, provided.PLAYERO, provided.EMPTY],
+            [provided.PLAYERX, provided.EMPTY, provided.EMPTY],
+            [provided.EMPTY, provided.PLAYERO, provided.PLAYERX]
+        ]
+        board = provided.TTTBoard(len(board), False, board)
+        scores = [
+            [3, 1, 2],
+            [-1, 3, 3],
+            [2, 2, -1]
+        ]
+        moves = [(0, 0), (1, 2), (1, 3)]
+        move = tictactoe.get_best_move(board, scores)
+        self.assertIn(move, moves)
+
 
 def run_suite(game_class):
     """
