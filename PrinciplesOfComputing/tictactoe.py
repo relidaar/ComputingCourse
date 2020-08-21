@@ -27,9 +27,11 @@ def mc_trial(board, player):
     :param player: current player
     :return: None
     '''
-    while not board.check_win():
-        move = random.choice(board.get_empty_squares())
-        board.move(move[0], move[1], player)
+    empty_squares = board.get_empty_squares()
+    while empty_squares and not board.check_win():
+        square = random.choice(empty_squares)
+        empty_squares.remove(square)
+        board.move(square[0], square[1], player)
         provided.switch_player(player)
 
 
@@ -81,12 +83,12 @@ def mc_move(board, player, trials):
     '''
     dim = range(board.get_dim())
     scores = [[0 for _ in dim] for _ in dim]
-    current_board = board.clone()
     for _ in range(trials):
         current_board = board.clone()
         mc_trial(current_board, player)
         mc_update_scores(scores, current_board, player)
-    return get_best_move(current_board, scores)
+    return get_best_move(board, scores)
+
 
 # Test game with the console or the GUI.  Uncomment whichever
 # you prefer.  Both should be commented out when you submit
