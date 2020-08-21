@@ -43,21 +43,21 @@ def mc_update_scores(scores, board, player):
     :param player: current player
     :return: None
     '''
-    other = provided.PLAYERO if player == provided.PLAYERX else provided.PLAYERX
-    if player == board.check_win():
-        score_current = SCORE_CURRENT
-        score_other = -SCORE_OTHER
-    else:
-        score_current = -SCORE_CURRENT
-        score_other = SCORE_OTHER
-    dim = board.get_dim()
-    for row in range(dim):
-        for col in range(dim):
+    winner = board.check_win()
+    size = board.get_dim()
+    for row in range(size):
+        for col in range(size):
             square = board.square(row, col)
-            if square == player:
-                scores[row][col] += score_current
-            if square == other:
-                scores[row][col] += score_other
+            if square == provided.PLAYERX:
+                if winner == provided.PLAYERX:
+                    scores[row][col] += SCORE_CURRENT
+                elif winner == provided.PLAYERO:
+                    scores[row][col] += -SCORE_OTHER
+            elif square == provided.PLAYERO:
+                if winner == provided.PLAYERX:
+                    scores[row][col] += -SCORE_CURRENT
+                elif winner == provided.PLAYERO:
+                    scores[row][col] += SCORE_OTHER
 
 
 def get_best_move(board, scores):
