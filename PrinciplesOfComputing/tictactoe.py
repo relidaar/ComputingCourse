@@ -3,6 +3,7 @@ Monte Carlo Tic-Tac-Toe Player
 """
 
 import random
+
 try:
     import poc_ttt_gui
     import poc_ttt_provided as provided
@@ -58,7 +59,16 @@ def mc_update_scores(scores, board, player):
 
 
 def get_best_move(board, scores):
-    pass
+    '''
+    Calculates best move from scores
+    :param board: game board
+    :param scores: current scores
+    :return: random element from list of best moves
+    '''
+    empty_squares = board.get_empty_squares()
+    max_score = max([scores[row][col] for row, col in empty_squares])
+    moves = [(row, col) for row, col in empty_squares if scores[row][col] == max_score]
+    return random.choice(moves)
 
 
 def mc_move(board, player, trials):
