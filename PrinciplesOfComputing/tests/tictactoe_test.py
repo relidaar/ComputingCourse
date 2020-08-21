@@ -20,6 +20,7 @@ class Test2048Game(unittest.TestCase):
         player = provided.PLAYERO
         tictactoe.mc_trial(board, player)
         self.assertIsNotNone(board.check_win())
+        self.assertIn(board.check_win(), [provided.PLAYERO, provided.PLAYERX, provided.DRAW])
 
 
 def run_suite(game_class):
