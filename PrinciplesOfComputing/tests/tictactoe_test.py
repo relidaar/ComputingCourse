@@ -44,9 +44,9 @@ class Test2048Game(unittest.TestCase):
     def test_update_scores_player_lost(self):
         dim = 3
         board = [
-            [provided.PLAYERO, provided.PLAYERX, provided.PLAYERO],
-            [provided.PLAYERX, provided.PLAYERO, provided.PLAYERX],
-            [provided.EMPTY, provided.PLAYERX, provided.PLAYERO]
+            [provided.PLAYERX, provided.PLAYERO, provided.PLAYERO],
+            [provided.PLAYERX, provided.PLAYERX, provided.EMPTY],
+            [provided.PLAYERO, provided.PLAYERO, provided.PLAYERX]
         ]
         expected = [[0 for _ in range(dim)] for _ in range(dim)]
         for row in range(dim):
