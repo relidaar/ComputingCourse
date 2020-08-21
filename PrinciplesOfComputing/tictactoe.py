@@ -32,7 +32,14 @@ def get_best_move(board, scores):
 
 
 def mc_move(board, player, trials):
-    pass
+    dim = range(board.get_dim())
+    scores = [[0 for _ in dim] for _ in dim]
+    current_board = board.clone()
+    for _ in range(trials):
+        current_board = board.clone()
+        mc_trial(current_board, player)
+        mc_update_scores(scores, current_board, player)
+    return get_best_move(current_board, scores)
 
 
 # Test game with the console or the GUI.  Uncomment whichever
