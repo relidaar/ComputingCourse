@@ -34,16 +34,3 @@ def gen_permutations(outcomes, length):
 def gen_combinations(outcomes, length):
     permutations = gen_permutations(outcomes, length)
     return set([tuple(sorted(item)) for item in permutations])
-
-
-outcomes = ['Red', 'Green', 'Blue']
-length = 3
-print 'outcomes (length of %d):' % length, outcomes
-sequences = gen_all_sequences(outcomes, length)
-sorted_sequences = gen_sorted_sequences(outcomes, length)
-permutations = gen_permutations(outcomes, length)
-combinations = gen_combinations(outcomes, length)
-print '\nsequences (length of %d):' % len(sequences), sequences
-print '\nsorted sequences (length of %d):' % len(sorted_sequences), sorted_sequences
-print '\npermutations (length of %d):' % len(permutations), permutations
-print '\ncombinations (length of %d):' % len(combinations), combinations
