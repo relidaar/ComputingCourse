@@ -4,6 +4,7 @@ http://en.wikipedia.org/wiki/Nim#The_21_game
 """
 
 import random
+
 try:
     import codeskulptor
 except ImportError:
@@ -19,10 +20,21 @@ def evaluate_position(num_items):
     """
     Monte Carlo evalation method for Nim
     """
-
-    # Insert your code here
-
-    return 0
+    best_rate = 0.0
+    best_move = 0
+    for initial_move in range(1, MAX_REMOVE + 1):
+        wins = 0
+        for _ in range(TRIALS):
+            items = num_items - initial_move
+            while items > 0:
+                items -= random.randrange(1, MAX_REMOVE + 1)
+            if items == 0:
+                wins += 1
+            current_rate = float(wins) / TRIALS
+            if current_rate > best_rate:
+                best_rate = current_rate
+                best_move = initial_move
+    return best_move
 
 
 def play_game(start_items):
@@ -47,7 +59,5 @@ def play_game(start_items):
             break
 
 
-play_game(21)
-
-
-
+print evaluate_position(10)
+# play_game(21)
