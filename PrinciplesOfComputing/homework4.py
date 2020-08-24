@@ -1,4 +1,5 @@
 import math
+import random
 
 from libs.combinatorics import gen_permutations, gen_combinations, gen_all_sequences, gen_sorted_sequences
 
@@ -80,3 +81,11 @@ print pascal_line
 for _ in range(TRIANGLE_HEIGHT - 1):
     pascal_line = next_line(pascal_line)
     print pascal_line
+
+print '\n--Task 10--'
+TEST_CASES = []
+for i in range(1, 10 + 1):
+    result = gen_permutations(range(10 + 1), i)
+    result = [list(item) for item in result if item[0] == 0]
+    TEST_CASES.append(random.choice(result))
+print TEST_CASES
