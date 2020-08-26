@@ -57,7 +57,10 @@ def expected_value(held_dice, num_die_sides, num_free_dice):
 
     Returns a floating point expected value
     """
-    return 0.0
+    outcomes = range(1, num_die_sides + 1)
+    sequences = gen_all_sequences(outcomes, num_free_dice)
+    scores = [score(held_dice + item) for item in sequences]
+    return sum(scores) / float(len(scores))
 
 
 def gen_all_holds(hand):
@@ -106,10 +109,3 @@ def run_example():
 # except ImportError:
 #     from libs import poc_holds_testsuite
 # poc_holds_testsuite.run_suite(gen_all_holds)
-
-
-
-
-
-
-
