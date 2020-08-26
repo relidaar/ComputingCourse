@@ -89,7 +89,16 @@ def strategy(hand, num_die_sides):
     Returns a tuple where the first element is the expected score and
     the second element is a tuple of the dice to hold
     """
-    return 0.0, ()
+    scores = []
+    holds = gen_all_holds(hand)
+    holds = [tuple(sorted(items)) for items in holds]
+    for hold in holds:
+        free_dices = list(hand)
+        for dice in hold:
+            free_dices.remove(dice)
+        value = expected_value(hold, num_die_sides, len(free_dices))
+        scores.append((value, hold))
+    return max(scores, key=lambda i: i[0])
 
 
 def run_example():
