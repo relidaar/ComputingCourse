@@ -38,6 +38,8 @@ def score(hand):
 
     Returns an integer score
     """
+    if len(hand) < 1:
+        return 0
     scores = dict()
     for value in hand:
         scores[value] = scores.get(value, 0) + value
