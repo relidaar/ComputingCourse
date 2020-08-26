@@ -4,12 +4,12 @@ Simplifications:  only allow discard and roll, only score against upper level
 """
 
 # Used to increase the timeout, if necessary
-try:
-    import codeskulptor
-except ImportError:
-    from SimpleGUICS2Pygame import codeskulptor
+# try:
+#     import codeskulptor
+# except ImportError:
+#     from SimpleGUICS2Pygame import codeskulptor
 
-codeskulptor.set_timeout(20)
+# codeskulptor.set_timeout(20)
 
 
 def gen_all_sequences(outcomes, length):
@@ -39,7 +39,10 @@ def score(hand):
 
     Returns an integer score
     """
-    return 0
+    scores = dict()
+    for value in hand:
+        scores[value] = scores.get(value, 0) + value
+    return max(scores.values())
 
 
 def expected_value(held_dice, num_die_sides, num_free_dice):
@@ -91,7 +94,7 @@ def run_example():
     print "Best strategy for hand", hand, "is to hold", hold, "with expected score", hand_score
 
 
-run_example()
+# run_example()
 
 # try:
 #     import poc_holds_testsuite
