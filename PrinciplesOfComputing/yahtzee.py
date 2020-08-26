@@ -17,9 +17,8 @@ def gen_all_sequences(outcomes, length):
     Iterative function that enumerates the set of all sequences of
     outcomes of given length.
     """
-
     answer_set = {()}
-    for dummy_idx in range(length):
+    for _ in range(length):
         temp_set = set()
         for partial_sequence in answer_set:
             for item in outcomes:
@@ -67,7 +66,11 @@ def gen_all_holds(hand):
 
     Returns a set of tuples, where each tuple is dice to hold
     """
-    return {()}
+    choices = [()]
+    for item in hand:
+        for subset in choices:
+            choices = choices + [tuple(subset) + (item, )]
+    return set(choices)
 
 
 def strategy(hand, num_die_sides):

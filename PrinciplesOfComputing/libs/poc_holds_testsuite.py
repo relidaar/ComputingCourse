@@ -20,11 +20,11 @@ def run_suite(gen_all_holds):
     hand = tuple([2, 4])
     suite.run_test(gen_all_holds(hand), {(), (2,), (4,), (2, 4)}, "Test #2:")
 
-    hand = tuple((3, 3, 3))
-    suite.run_test(gen_all_holds(hand), {(), (3,), (3, 3), (3, 3, 3)}, "Test #4:")
-
     hand = tuple((1, 2, 2))
     suite.run_test(gen_all_holds(hand), {(), (1,), (2,), (1, 2), (2, 2), (1, 2, 2)}, "Test #3:")
+
+    hand = tuple((3, 3, 3))
+    suite.run_test(gen_all_holds(hand), {(), (3,), (3, 3), (3, 3, 3)}, "Test #4:")
 
     hand = tuple([2, 3, 6])
     suite.run_test(gen_all_holds(hand), {(), (2,), (3,), (6,), (2, 3), (2, 6), (3, 6), (2, 3, 6)}, "Test #5:")
