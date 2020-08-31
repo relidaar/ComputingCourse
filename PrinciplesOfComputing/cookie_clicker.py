@@ -176,14 +176,26 @@ def strategy_cheap(cookies, cps, history, time_left, build_info):
     """
     Always buy the cheapest item you can afford in the time left.
     """
-    return None
+    max_cookies = cookies + time_left * cps
+    items = [(item, build_info.get_cost(item)) for item in build_info.build_items()]
+    items = filter(lambda el: el[1] <= max_cookies, items)
+    if not items:
+        return None
+    items = min(items, key=lambda el: el[1])
+    return items[0] if items else None
 
 
 def strategy_expensive(cookies, cps, history, time_left, build_info):
     """
     Always buy the most expensive item you can afford in the time left.
     """
-    return None
+    max_cookies = cookies + time_left * cps
+    items = [(item, build_info.get_cost(item)) for item in build_info.build_items()]
+    items = filter(lambda el: el[1] <= max_cookies, items)
+    if not items:
+        return None
+    items = max(items, key=lambda el: el[1])
+    return items[0] if items else None
 
 
 def strategy_best(cookies, cps, history, time_left, build_info):
