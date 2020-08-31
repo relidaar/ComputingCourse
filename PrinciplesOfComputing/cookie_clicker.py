@@ -129,9 +129,23 @@ def simulate_clicker(build_info, duration, strategy):
     duration with the given strategy.  Returns a ClickerState
     object corresponding to the final state of the game.
     """
-
-    # Replace with your code
-    return ClickerState()
+    state = ClickerState()
+    info = build_info.clone()
+    time_left = duration
+    while time_left >= 0:
+        next_item = strategy(state.get_cookies(), state.get_cps(), state.get_history(), time_left, info)
+        if next_item is None:
+            break
+        item_cost = info.get_cost(next_item)
+        wait_time = state.time_until(item_cost)
+        if time_left < wait_time:
+            break
+        time_left -= wait_time
+        state.wait(wait_time)
+        state.buy_item(next_item, item_cost, info.get_cps(next_item))
+        info.update_item(next_item)
+    state.wait(time_left)
+    return state
 
 
 def strategy_cursor_broken(cookies, cps, history, time_left, build_info):
