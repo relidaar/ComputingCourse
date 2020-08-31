@@ -16,6 +16,8 @@ Cookie Clicker Simulator
 
 # Constants
 # SIM_TIME = 10000000000.0
+import math
+
 SIM_TIME = 100.0
 
 
@@ -35,10 +37,10 @@ class ClickerState:
         """
         Return human readable state
         """
-        return "Time: %f " \
-               "Current Cookies: %f " \
-               "CPS: %f " \
-               "Total Cookies: %f " \
+        return "Time: %.1f " \
+               "Current Cookies: %.1f " \
+               "CPS: %.1f " \
+               "Total Cookies: %.1f " \
                "History (length: %f): %s" % \
                (self._current_time,
                 self._current_cookies,
@@ -95,7 +97,7 @@ class ClickerState:
         """
         if self._current_cookies >= cookies:
             return 0.0
-        return float(round((cookies - self._current_cookies) / self._current_cps))
+        return math.ceil((cookies - self._current_cookies) / self._current_cps)
 
     def wait(self, time):
         """
