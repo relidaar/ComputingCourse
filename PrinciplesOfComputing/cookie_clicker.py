@@ -3,15 +3,14 @@ Cookie Clicker Simulator
 """
 
 # Used to increase the timeout, if necessary
-try:
-    import codeskulptor
-    import simpleplot
-    import poc_clicker_provided as provided
-except ImportError:
-    from SimpleGUICS2Pygame import codeskulptor
-    from SimpleGUICS2Pygame import simpleplot
-    import libs.poc_clicker_provided as provided
-
+# try:
+#     import codeskulptor
+#     import simpleplot
+#     import poc_clicker_provided as provided
+# except ImportError:
+#     from SimpleGUICS2Pygame import codeskulptor
+#     from SimpleGUICS2Pygame import simpleplot
+#     import libs.poc_clicker_provided as provided
 
 # codeskulptor.set_timeout(20)
 
@@ -26,13 +25,27 @@ class ClickerState:
     """
 
     def __init__(self):
-        pass
+        self.total_cookies = 0.0
+        self.current_cookies = 0.0
+        self.current_cps = 1.0
+        self.current_time = 0.0
+        self.history = [(0.0, None, 0.0, 0.0)]
 
     def __str__(self):
         """
         Return human readable state
         """
-        return "not yet implemented"
+        return "Time: %f " \
+               "Current Cookies: %f " \
+               "CPS: %f " \
+               "Total Cookies: %f " \
+               "History (length: %f): %s" % \
+               (self.current_time,
+                self.current_cookies,
+                self.current_cps,
+                self.total_cookies,
+                len(self.history),
+                self.history)
 
     def get_cookies(self):
         """
@@ -41,7 +54,7 @@ class ClickerState:
 
         Should return a float
         """
-        return 0.0
+        return self.current_cookies
 
     def get_cps(self):
         """
@@ -49,7 +62,7 @@ class ClickerState:
 
         Should return a float
         """
-        return 0.0
+        return self.current_cps
 
     def get_time(self):
         """
@@ -57,7 +70,7 @@ class ClickerState:
 
         Should return a float
         """
-        return 0.0
+        return self.current_time
 
     def get_history(self):
         """
@@ -71,7 +84,7 @@ class ClickerState:
         Should return a copy of any internal data structures,
         so that they will not be modified outside of the class.
         """
-        return []
+        return list(self.history)
 
     def time_until(self, cookies):
         """
@@ -80,7 +93,9 @@ class ClickerState:
 
         Should return a float with no fractional part
         """
-        return 0.0
+        if self.current_cookies >= cookies:
+            return 0.0
+        return float(round((cookies - self.current_cookies) / self.current_cps))
 
     def wait(self, time):
         """
@@ -88,7 +103,11 @@ class ClickerState:
 
         Should do nothing if time <= 0.0
         """
-        pass
+        if time > 0.0:
+            self.current_time += time
+            cookies = time * self.current_cps
+            self.total_cookies += cookies
+            self.current_cookies += cookies
 
     def buy_item(self, item_name, cost, additional_cps):
         """
@@ -96,7 +115,10 @@ class ClickerState:
 
         Should do nothing if you cannot afford the item
         """
-        pass
+        if self.current_cookies >= cost:
+            self.current_cookies -= cost
+            self.current_cps += additional_cps
+            self.history.append((self.current_time, item_name, cost, self.total_cookies))
 
 
 def simulate_clicker(build_info, duration, strategy):
@@ -155,12 +177,12 @@ def strategy_best(cookies, cps, history, time_left, build_info):
     return None
 
 
-def run_strategy(strategy_name, time, strategy):
-    """
-    Run a simulation for the given time with one strategy.
-    """
-    state = simulate_clicker(provided.BuildInfo(), time, strategy)
-    print strategy_name, ":", state
+# def run_strategy(strategy_name, time, strategy):
+#     """
+#     Run a simulation for the given time with one strategy.
+#     """
+#     state = simulate_clicker(provided.BuildInfo(), time, strategy)
+#     print strategy_name, ":", state
 
     # Plot total cookies over time
 
@@ -171,12 +193,12 @@ def run_strategy(strategy_name, time, strategy):
     # history = [(item[0], item[3]) for item in history]
     # simpleplot.plot_lines(strategy_name, 1000, 400, 'Time', 'Total Cookies', [history], True)
 
-
-def run():
-    """
-    Run the simulator.
-    """
-    run_strategy("Cursor", SIM_TIME, strategy_cursor_broken)
+#
+# def run():
+#     """
+#     Run the simulator.
+#     """
+#     run_strategy("Cursor", SIM_TIME, strategy_cursor_broken)
 
     # Add calls to run_strategy to run additional strategies
     # run_strategy("Cheap", SIM_TIME, strategy_cheap)
@@ -184,6 +206,4 @@ def run():
     # run_strategy("Best", SIM_TIME, strategy_best)
 
 
-run()
-
-
+# run()
