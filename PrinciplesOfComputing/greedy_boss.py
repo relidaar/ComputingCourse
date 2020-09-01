@@ -82,10 +82,10 @@ def greedy_boss(days_in_simulation, bribe_cost_increment, plot_type=STANDARD):
 
     # Each iteration of this while loop simulates one bribe
     while worker.get_current_day() <= days_in_simulation:
-        if plot_type == STANDARD:
+        if plot_type == STANDARD or worker.get_current_day() == 0:
             days_vs_earnings.append((worker.get_current_day(), worker.get_total_earnings()))
         else:
-            days_vs_earnings.append([math.log(worker.get_current_day()), math.log(worker.get_total_earnings())])
+            days_vs_earnings.append((math.log(worker.get_current_day()), math.log(worker.get_total_earnings())))
         if bribe.get_cost() > worker.get_earnings():
             days_to_wait = worker.days_to_next_bribe(bribe.get_cost())
             worker.wait(days_to_wait)
