@@ -22,6 +22,52 @@ SALARY_INCREMENT = 100
 INITIAL_BRIBE_COST = 1000
 
 
+class Bribe:
+    def __init__(self, cost_increment):
+        self._cost = INITIAL_BRIBE_COST
+        self._cost_increment = cost_increment
+
+    def get_cost(self):
+        return self._cost
+
+    def update_cost(self):
+        self._cost += self._cost_increment
+
+
+class Worker:
+    def __init__(self):
+        self._current_day = 0
+        self._total_earnings = 0
+        self._current_earnings = 0
+        self._salary_per_day = INITIAL_SALARY
+
+    def get_current_day(self):
+        return self._current_day
+
+    def get_earnings(self):
+        return self._current_earnings
+
+    def get_total_earnings(self):
+        return self._total_earnings
+
+    def days_to_next_bribe(self, bribe_cost):
+        if self._current_earnings >= bribe_cost:
+            return 0
+        return int(math.ceil((bribe_cost - self._current_earnings) / float(self._salary_per_day)))
+
+    def wait(self, days_to_wait):
+        if 0 < days_to_wait:
+            self._current_day += days_to_wait
+            earnings = self._salary_per_day * days_to_wait
+            self._current_earnings += earnings
+            self._total_earnings += earnings
+
+    def pay_bribe(self, bribe):
+        self._current_earnings -= bribe.get_cost()
+        self._salary_per_day += SALARY_INCREMENT
+        bribe.update_cost()
+
+
 def greedy_boss(days_in_simulation, bribe_cost_increment, plot_type=STANDARD):
     """
     Simulation of greedy boss
