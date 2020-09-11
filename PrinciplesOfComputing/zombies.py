@@ -152,7 +152,12 @@ class Apocalypse(poc_grid.Grid):
         Function that moves zombies towards humans, no diagonal moves
         are allowed
         """
-        pass
+        for index, zombie in enumerate(self._zombie_list):
+            cells = self.four_neighbors(zombie[0], zombie[1])
+            cells = filter(lambda item: self.is_empty(item[0], item[1]), cells)
+            cells.append(zombie)
+            cells = [(cell, human_distance_field[cell[0]][cell[1]]) for cell in cells]
+            self._zombie_list[index] = min(cells, key=lambda item: item[1])[0]
 
 # Start up gui for simulation - You will need to write some code above
 # before this will work without errors
