@@ -29,8 +29,8 @@ def print_field(field):
     Print a distance field in a human readable manner with
     one row per line
     """
-
-    pass
+    for row in field:
+        print row
 
 
 def run_example():
