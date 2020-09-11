@@ -4,7 +4,10 @@ Click "Mouse click" button to toggle items added by mouse clicks
 Zombies have four way movement, humans have eight way movement
 """
 
-import simplegui
+try:
+    import simplegui
+except ImportError:
+    import SimpleGUICS2Pygame.simplegui_lib as simplegui
 
 # Global constants
 EMPTY = 0
@@ -20,7 +23,7 @@ CELL_COLORS = {EMPTY: "White",
                FULL: "Black",
                HAS_ZOMBIE: "Red",
                HAS_HUMAN: "Green",
-               HAS_ZOMBIE|HAS_HUMAN: "Purple"}
+               HAS_ZOMBIE | HAS_HUMAN: "Purple"}
 
 NAME_MAP = {OBSTACLE: "obstacle",
             HUMAN: "human",
@@ -58,20 +61,17 @@ class ApocalypseGUI:
         self._frame.set_mouseclick_handler(self.add_item)
         self._frame.set_draw_handler(self.draw)
 
-
     def start(self):
         """
         Start frame
         """
         self._frame.start()
 
-
     def clear(self):
         """
         Event handler for button that clears everything
         """
         self._simulation.clear()
-
 
     def flee(self):
         """
@@ -81,7 +81,6 @@ class ApocalypseGUI:
         zombie_distance = self._simulation.compute_distance_field(ZOMBIE)
         self._simulation.move_humans(zombie_distance)
 
-
     def stalk(self):
         """
         Event handler for button that causes zombies to stack humans by one cell
@@ -89,7 +88,6 @@ class ApocalypseGUI:
         """
         human_distance = self._simulation.compute_distance_field(HUMAN)
         self._simulation.move_zombies(human_distance)
-
 
     def toggle_item(self):
         """
@@ -104,7 +102,6 @@ class ApocalypseGUI:
         elif self._item_type == HUMAN:
             self._item_type = OBSTACLE
             self._item_label.set_text(LABEL_STRING + NAME_MAP[OBSTACLE])
-
 
     def add_item(self, click_position):
         """
@@ -121,7 +118,6 @@ class ApocalypseGUI:
             if self._simulation.is_empty(row, col):
                 self._simulation.add_human(row, col)
 
-
     def is_occupied(self, row, col):
         """
         Determines whether the given cell contains any humans or zombies
@@ -130,7 +126,6 @@ class ApocalypseGUI:
         human = cell in self._simulation.humans()
         zombie = cell in self._simulation.zombies()
         return human or zombie
-
 
     def draw_cell(self, canvas, row, col, color="Cyan"):
         """
@@ -170,7 +165,7 @@ class ApocalypseGUI:
         Handler for drawing obstacle grid, human queue and zombie queue
         """
         grid = [[FULL] * self._grid_width for
-                dummy_row in range(self._grid_height)]
+                _ in range(self._grid_height)]
         for row in range(self._grid_height):
             for col in range(self._grid_width):
                 if self._simulation.is_empty(row, col):

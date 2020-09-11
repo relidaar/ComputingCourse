@@ -39,21 +39,22 @@ class Apocalypse(poc_grid.Grid):
         if obstacle_list is not None:
             for cell in obstacle_list:
                 self.set_full(cell[0], cell[1])
-        if zombie_list is not None:
-            self._zombie_list = list(zombie_list)
-        else:
-            self._zombie_list = []
-        if human_list is not None:
-            self._human_list = list(human_list)
-        else:
-            self._human_list = []
+        self._zombie_list = list(zombie_list) if zombie_list is not None else []
+        self._human_list = list(human_list) if human_list is not None else []
+
+    def __str__(self):
+        return 'Grid: \n%s' \
+               'Humans: %s\n' \
+               'Zombies %s\n' % (poc_grid.Grid.__str__(self), self._human_list, self._zombie_list)
 
     def clear(self):
         """
         Set cells in obstacle grid to be empty
         Reset zombie and human lists to be empty
         """
-        self.clear()
+        for row in range(self.get_grid_height()):
+            for col in range(self.get_grid_width()):
+                self.set_empty(row, col)
         self._human_list = []
         self._zombie_list = []
 
