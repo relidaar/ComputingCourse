@@ -101,7 +101,39 @@ class Apocalypse(poc_grid.Grid):
         Distance at member of entity_list is zero
         Shortest paths avoid obstacles and use four-way distances
         """
-        return
+        width = self.get_grid_width()
+        height = self.get_grid_height()
+
+        boundary = poc_queue.Queue()
+        if entity_type == ZOMBIE:
+            for zombie in self._zombie_list:
+                boundary.enqueue(zombie)
+        else:
+            for human in self._human_list:
+                boundary.enqueue(human)
+        distance_field = [[width * height for _ in range(width)] for _ in range(height)]
+
+        visited = poc_grid.Grid(height, width)
+        for row in range(height):
+            for col in range(width):
+                if (row, col) in boundary:
+                    visited.set_full(row, col)
+                    distance_field[row][col] = 0
+                elif not self.is_empty(row, col):
+                    visited.set_full(row, col)
+                else:
+                    visited.set_empty(row, col)
+
+        while boundary:
+            current_cell = boundary.dequeue()
+            for neighbor_cell in visited.four_neighbors(current_cell[0], current_cell[1]):
+                if visited.is_empty(neighbor_cell[0], neighbor_cell[1]):
+                    visited.set_full(neighbor_cell[0], neighbor_cell[1])
+                    boundary.enqueue(neighbor_cell)
+                    distance_field[neighbor_cell[0]][neighbor_cell[1]] = \
+                        distance_field[current_cell[0]][current_cell[1]] + 1
+
+        return distance_field
 
     def move_humans(self, zombie_distance_field):
         """
@@ -116,6 +148,7 @@ class Apocalypse(poc_grid.Grid):
         are allowed
         """
         pass
+
 
 # Start up gui for simulation - You will need to write some code above
 # before this will work without errors
