@@ -7,7 +7,7 @@ Zombies have four way movement, humans have eight way movement
 try:
     import simplegui
 except ImportError:
-    import SimpleGUICS2Pygame.simplegui_lib as simplegui
+    import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
 # Global constants
 EMPTY = 0
