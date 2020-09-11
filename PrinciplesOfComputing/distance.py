@@ -11,6 +11,7 @@ def manhattan_distance(row0, col0, row1, col1):
     Compute the Manhattan distance between the cells
     (row0, col0) and (row1, col1)
     """
+    return abs(row0 - row1) + abs(col0 - col1)
 
 
 def create_distance_field(entity_list):
