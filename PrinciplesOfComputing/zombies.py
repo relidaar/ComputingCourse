@@ -140,7 +140,12 @@ class Apocalypse(poc_grid.Grid):
         Function that moves humans away from zombies, diagonal moves
         are allowed
         """
-        pass
+        for index, human in enumerate(self._human_list):
+            cells = self.eight_neighbors(human[0], human[1])
+            cells = filter(lambda item: self.is_empty(item[0], item[1]), cells)
+            cells.append(human)
+            cells = [(cell, zombie_distance_field[cell[0]][cell[1]]) for cell in cells]
+            self._human_list[index] = max(cells, key=lambda item: item[1])[0]
 
     def move_zombies(self, human_distance_field):
         """
@@ -148,7 +153,6 @@ class Apocalypse(poc_grid.Grid):
         are allowed
         """
         pass
-
 
 # Start up gui for simulation - You will need to write some code above
 # before this will work without errors
