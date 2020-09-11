@@ -20,8 +20,11 @@ def create_distance_field(entity_list):
     each entity (zombies or humans) in entity_list
     Each entity is represented as a grid position of the form (row, col)
     """
-
-    return [[]]
+    field = [[GRID_WIDTH + GRID_HEIGHT for _ in range(GRID_WIDTH)] for _ in range(GRID_HEIGHT)]
+    for row in range(GRID_HEIGHT):
+        for col in range(GRID_WIDTH):
+            field[row][col] = min([manhattan_distance(entity[0], entity[1], row, col) for entity in entity_list])
+    return field
 
 
 def print_field(field):
