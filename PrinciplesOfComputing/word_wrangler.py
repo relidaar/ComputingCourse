@@ -24,6 +24,11 @@ def remove_duplicates(list1):
 
     This function can be iterative.
     """
+    result = []
+    for item in list1:
+        if item not in result:
+            result.append(item)
+    return result
 
 
 def intersect(list1, list2):
