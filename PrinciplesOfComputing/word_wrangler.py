@@ -58,7 +58,17 @@ def merge(list1, list2):
 
     This function can be iterative.
     """
-    return []
+    result = []
+    list1 = list(list1)
+    list2 = list(list2)
+    while list1 and list2:
+        if list1[0] <= list2[0]:
+            result.append(list1[0])
+            list1 = list1[1:]
+        else:
+            result.append(list2[0])
+            list2 = list2[1:]
+    return result + list1 + list2
 
 
 def merge_sort(list1):
@@ -69,7 +79,16 @@ def merge_sort(list1):
 
     This function should be recursive.
     """
-    return []
+    length = len(list1)
+    if not list1:
+        return list1
+    if length == 1:
+        return [list1[0]]
+
+    left = merge_sort(list1[:length/2])
+    right = merge_sort(list1[length/2:])
+
+    return merge(left, right)
 
 
 # Function to generate all strings for the word wrangler game
