@@ -3,12 +3,12 @@ Student code for Word Wrangler game
 """
 
 import urllib2
-# try:
-#     import codeskulptor
-#     import poc_wrangler_provided as provided
-# except ImportError:
-#     from SimpleGUICS2Pygame import codeskulptor
-#     import libs.poc_wrangler_provided as provided
+try:
+    import codeskulptor
+    import poc_wrangler_provided as provided
+except ImportError:
+    from SimpleGUICS2Pygame import codeskulptor
+    import libs.poc_wrangler_provided as provided
 
 WORD_FILE = "assets_scrabble_words3.txt"
 
@@ -122,21 +122,26 @@ def load_words(filename):
 
     Returns a list of strings.
     """
-    return []
+    strings = []
+    url = codeskulptor.file2url(WORD_FILE)
+    data = urllib2.urlopen(url)
+    for string in data.readlines():
+        strings.append(string[:-1])
+    return strings
 
 
-# def run():
-#     """
-#     Run game.
-#     """
-#     words = load_words(WORD_FILE)
-#     wrangler = provided.WordWrangler(words, remove_duplicates,
-#                                      intersect, merge_sort,
-#                                      gen_all_strings)
-#     provided.run_game(wrangler)
+def run():
+    """
+    Run game.
+    """
+    words = load_words(WORD_FILE)
+    wrangler = provided.WordWrangler(words, remove_duplicates,
+                                     intersect, merge_sort,
+                                     gen_all_strings)
+    provided.run_game(wrangler)
 
 
 # Uncomment when you are ready to try the game
-# run()
+run()
 
 

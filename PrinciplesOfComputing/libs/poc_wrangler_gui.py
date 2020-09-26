@@ -5,7 +5,7 @@ Word Wrangler GUI
 try:
     import simplegui
 except ImportError:
-    import SimpleGUICS2Pygame.simplegui_lib as simplegui
+    import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
 
 # Global constants
 FONT_SIZE = 20
