@@ -11,14 +11,14 @@ except ImportError:
     import PrinciplesOfComputing.libs.poc_ttt_gui as poc_ttt_gui
     import PrinciplesOfComputing.libs.poc_ttt_provided as provided
 import unittest
-from .. import tictactoe
+from .. import tictactoe_montecarlo
 
 
 class Test2048Game(unittest.TestCase):
     def test_game_trial(self):
         board = provided.TTTBoard(3)
         player = provided.PLAYERO
-        tictactoe.mc_trial(board, player)
+        tictactoe_montecarlo.mc_trial(board, player)
         self.assertIsNotNone(board.check_win())
         self.assertIn(board.check_win(), [provided.PLAYERO, provided.PLAYERX, provided.DRAW])
 
@@ -33,12 +33,12 @@ class Test2048Game(unittest.TestCase):
         for row in range(dim):
             for col, square in enumerate(board[row]):
                 if square == provided.PLAYERO:
-                    expected[row][col] += tictactoe.SCORE_CURRENT
+                    expected[row][col] += tictactoe_montecarlo.SCORE_CURRENT
                 if square == provided.PLAYERX:
-                    expected[row][col] -= tictactoe.SCORE_OTHER
+                    expected[row][col] -= tictactoe_montecarlo.SCORE_OTHER
         board = provided.TTTBoard(dim, False, board)
         scores = [[0 for _ in range(dim)] for _ in range(dim)]
-        tictactoe.mc_update_scores(scores, board, provided.PLAYERO)
+        tictactoe_montecarlo.mc_update_scores(scores, board, provided.PLAYERO)
         self.assertEqual(expected, scores)
 
     def test_update_scores_player_lost(self):
@@ -52,12 +52,12 @@ class Test2048Game(unittest.TestCase):
         for row in range(dim):
             for col, square in enumerate(board[row]):
                 if square == provided.PLAYERO:
-                    expected[row][col] -= tictactoe.SCORE_CURRENT
+                    expected[row][col] -= tictactoe_montecarlo.SCORE_CURRENT
                 if square == provided.PLAYERX:
-                    expected[row][col] += tictactoe.SCORE_OTHER
+                    expected[row][col] += tictactoe_montecarlo.SCORE_OTHER
         board = provided.TTTBoard(dim, False, board)
         scores = [[0 for _ in range(dim)] for _ in range(dim)]
-        tictactoe.mc_update_scores(scores, board, provided.PLAYERO)
+        tictactoe_montecarlo.mc_update_scores(scores, board, provided.PLAYERO)
         self.assertEqual(expected, scores)
 
     def test_get_best_move(self):
@@ -73,7 +73,7 @@ class Test2048Game(unittest.TestCase):
             [2, 2, -1]
         ]
         moves = [(0, 0), (1, 2), (1, 3)]
-        move = tictactoe.get_best_move(board, scores)
+        move = tictactoe_montecarlo.get_best_move(board, scores)
         self.assertIn(move, moves)
 
 
