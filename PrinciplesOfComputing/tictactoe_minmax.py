@@ -1,19 +1,14 @@
 """
 Mini-max Tic-Tac-Toe Player
 """
-import random
-import poc_ttt_gui
-import poc_ttt_provided as provided
-import codeskulptor
-
-# try:
-#     import poc_ttt_gui
-#     import poc_ttt_provided as provided
-#     import codeskulptor
-# except ImportError:
-#     from libs import poc_ttt_gui
-#     import libs.poc_ttt_provided as provided
-#     from SimpleGUICS2Pygame import codeskulptor
+try:
+    import poc_ttt_gui
+    import poc_ttt_provided as provided
+    import codeskulptor
+except ImportError:
+    from libs import poc_ttt_gui
+    import libs.poc_ttt_provided as provided
+    from SimpleGUICS2Pygame import codeskulptor
 
 # Set timeout, as mini-max can take a long time
 codeskulptor.set_timeout(60)
