@@ -4,10 +4,11 @@ Note that solved configuration has the blank (zero) tile in upper left
 Use the arrows key to swap this tile with its neighbors
 """
 
-try:
-    import poc_fifteen_gui
-except ImportError:
-    from libs import poc_fifteen_gui
+
+# try:
+#     import poc_fifteen_gui
+# except ImportError:
+#     from libs import poc_fifteen_gui
 
 
 class Puzzle:
@@ -94,7 +95,7 @@ class Puzzle:
         for row in range(self._height):
             for col in range(self._width):
                 if self._grid[row][col] == solved_value:
-                    return (row, col)
+                    return row, col
         assert False, "Value " + str(solved_value) + " not found"
 
     def update_puzzle(self, move_string):
@@ -129,14 +130,52 @@ class Puzzle:
     ##################################################################
     # Phase one methods
 
-    def lower_row_invariant(self, target_row, target_col):
+    def _initial_position_invariant(self, initial_row, initial_col):
+        """
+        Check if the position is in boundaries
+        """
+        return (0 <= initial_row < self._height) and (0 <= initial_col < self._width)
+
+    def _correct_position_invariant(self, row, col):
+        """
+        Check if the tile on the provided position has correct value
+        """
+        return self.get_number(row, col) == row * self._width + col
+
+    def _zero_position_invariant(self, initial_row, initial_col):
+        """
+        Check if value of the tile on the provided position is zero
+        """
+        return self.get_number(initial_row, initial_col) == 0
+
+    def _row_positions_invariant(self, initial_row, initial_col=0):
+        """
+        Check if the all tiles of the row from initial column have correct values
+        """
+        for col in range(initial_col, self._width):
+            if not self._correct_position_invariant(initial_row, col):
+                return False
+        return True
+
+    def _lower_rows_positions_invariant(self, initial_row):
+        """
+        Check if the all tiles of lower rows from initial column have correct values
+        """
+        for row in range(initial_row + 1, self._height):
+            if not self._row_positions_invariant(row):
+                return False
+        return True
+
+    def lower_row_invariant(self, initial_row, initial_col):
         """
         Check whether the puzzle satisfies the specified invariant
-        at the given position in the bottom rows of the puzzle (target_row > 1)
+        at the given position in the bottom rows of the puzzle (initial_row > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+        return self._initial_position_invariant(initial_row, initial_col) and \
+               self._zero_position_invariant(initial_row, initial_col) and \
+               self._row_positions_invariant(initial_row, initial_col + 1) and \
+               self._lower_rows_positions_invariant(initial_row)
 
     def solve_interior_tile(self, target_row, target_col):
         """
@@ -210,6 +249,5 @@ class Puzzle:
         # replace with your code
         return ""
 
-
 # Start interactive simulation
-poc_fifteen_gui.FifteenGUI(Puzzle(4, 4))
+# poc_fifteen_gui.FifteenGUI(Puzzle(2, 2))
