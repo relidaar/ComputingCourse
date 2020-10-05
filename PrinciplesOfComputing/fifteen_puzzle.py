@@ -258,16 +258,33 @@ class Puzzle:
         Solve the upper left 2x2 part of the puzzle
         Updates the puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        moves = 'ul' + 'rdlu' * 2
+        self.update_puzzle(moves)
+        return moves
 
     def solve_puzzle(self):
         """
         Generate a solution string for a puzzle
         Updates the puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        moves = ''
+        last_row = self._height - 1
+        last_col = self._width - 1
+        zero_row, zero_col = self.current_position(0, 0)
+        moves += 'r' * (last_col - zero_col) + 'd' * (last_row - zero_row)
+        self.update_puzzle(moves)
+
+        for row in range(last_row, 1, -1):
+            for col in range(last_col, 0, -1):
+                moves += self.solve_interior_tile(row, col)
+            moves += self.solve_col0_tile(row)
+
+        for col in range(last_col, 1, -1):
+            moves += self.solve_row1_tile(col)
+            moves += self.solve_row0_tile(col)
+
+        moves += self.solve_2x2()
+        return moves
 
 
 def move(target_row, target_col, row, col):
@@ -299,6 +316,4 @@ def move(target_row, target_col, row, col):
 # except ImportError:
 #     from libs import poc_fifteen_gui
 #
-# obj = Puzzle(3, 3, [[4, 1, 0], [2, 3, 5], [6, 7, 8]])
-# poc_fifteen_gui.FifteenGUI(obj)
-# poc_fifteen_gui.FifteenGUI(Puzzle(2, 2))
+# poc_fifteen_gui.FifteenGUI(Puzzle(3, 3, [[8, 7, 6], [5, 4, 3], [2, 1, 0]]))
