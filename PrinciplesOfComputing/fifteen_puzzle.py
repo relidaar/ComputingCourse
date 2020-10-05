@@ -5,12 +5,6 @@ Use the arrows key to swap this tile with its neighbors
 """
 
 
-# try:
-#     import poc_fifteen_gui
-# except ImportError:
-#     from libs import poc_fifteen_gui
-
-
 class Puzzle:
     """
     Class representation for the Fifteen puzzle
@@ -182,16 +176,29 @@ class Puzzle:
         Place correct tile at target position
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        assert self.lower_row_invariant(target_row, target_col)
+        row, col = self.current_position(target_row, target_col)
+        moves = position_tile(target_row, target_col, row, col)
+        self.update_puzzle(moves)
+        assert self.lower_row_invariant(target_row, target_col - 1)
+        return moves
 
     def solve_col0_tile(self, target_row):
         """
         Solve tile in column zero on specified row (> 1)
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        assert self.lower_row_invariant(target_row, 0)
+        row, col = self.current_position(target_row, 0)
+        moves = 'ur'
+        if row == target_row - 1 and col == 0:
+            moves += 'r' * (self._width - 2)
+            self.update_puzzle(moves)
+            return moves
+        moves += position_tile(target_row - 1, 1, row, col) + 'ruldrdlurdluurddlur' + 'r' * (self._width - 2)
+        self.update_puzzle(moves)
+        assert self.lower_row_invariant(target_row - 1, self.get_width() - 1)
+        return moves
 
     #############################################################
     # Phase two methods
@@ -249,5 +256,33 @@ class Puzzle:
         # replace with your code
         return ""
 
+
+def position_tile(target_row, target_col, row, col):
+    '''
+    Moves a tile from (row, col) to (target row, target col)
+    '''
+    moves = ''
+    vertical_turn = 'druld'
+    horizontal_right_turn = 'rdllu' if row == 0 else 'rulld'
+    horizontal_left_turn = 'drrul' if row == 0 else 'urrdl'
+
+    horizontal_delta = target_col - col
+    vertical_delta = target_row - row
+    moves += 'u' * vertical_delta
+    if horizontal_delta == 0:
+        moves += 'ld' + vertical_turn * (vertical_delta - 1)
+    elif horizontal_delta < 0:
+        moves += 'r' * (abs(horizontal_delta) - 1) + horizontal_right_turn * abs(horizontal_delta)
+    elif horizontal_delta > 0:
+        moves += 'l' * horizontal_delta + horizontal_left_turn * (horizontal_delta - 1)
+    moves += vertical_turn * vertical_delta
+    return moves
+
+
 # Start interactive simulation
+# try:
+#     import poc_fifteen_gui
+# except ImportError:
+#     from libs import poc_fifteen_gui
+#
 # poc_fifteen_gui.FifteenGUI(Puzzle(2, 2))
