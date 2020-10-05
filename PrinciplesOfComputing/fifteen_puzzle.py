@@ -209,8 +209,9 @@ class Puzzle:
         at the given column (col > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+        return self._zero_position_invariant(0, target_col) and \
+               self._row_positions_invariant(1, target_col) and \
+               self._lower_rows_positions_invariant(1)
 
     def row1_invariant(self, target_col):
         """
@@ -218,8 +219,7 @@ class Puzzle:
         at the given column (col > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+        return self.lower_row_invariant(1, target_col)
 
     def solve_row0_tile(self, target_col):
         """
@@ -284,5 +284,5 @@ def position_tile(target_row, target_col, row, col):
 #     import poc_fifteen_gui
 # except ImportError:
 #     from libs import poc_fifteen_gui
-#
+
 # poc_fifteen_gui.FifteenGUI(Puzzle(2, 2))
