@@ -284,6 +284,7 @@ def move(target_row, target_col, row, col):
     moves += 'u' * vertical_delta
     if horizontal_delta == 0:
         moves += 'ld' + vertical_turn * (vertical_delta - 1)
+        return moves
     elif horizontal_delta < 0:
         moves += 'r' * (abs(horizontal_delta) - 1) + horizontal_right_turn * abs(horizontal_delta)
     elif horizontal_delta > 0:
