@@ -189,15 +189,17 @@ class Puzzle:
         Updates puzzle and returns a move string
         """
         assert self.lower_row_invariant(target_row, 0)
-        row, col = self.current_position(target_row, 0)
         moves = 'ur'
-        if row == target_row - 1 and col == 0:
-            moves += 'r' * (self._width - 2)
-            self.update_puzzle(moves)
-            return moves
-        moves += move(target_row - 1, 1, row, col) + 'ruldrdlurdluurddlur' + 'r' * (self._width - 2)
         self.update_puzzle(moves)
-        assert self.lower_row_invariant(target_row - 1, self.get_width() - 1)
+        row, col = self.current_position(target_row, 0)
+        if row == target_row and col == 0:
+            moves += 'r' * (self._width - 2)
+            self.update_puzzle(moves[2:])
+            assert self.lower_row_invariant(target_row - 1, self._width - 1)
+            return moves
+        moves += move(target_row - 1, 1, row, col) + 'ruldrdlurdluurddlu' + 'r' * (self._width - 1)
+        self.update_puzzle(moves[2:])
+        assert self.lower_row_invariant(target_row - 1, self._width - 1)
         return moves
 
     #############################################################
@@ -227,13 +229,13 @@ class Puzzle:
         Updates puzzle and returns a move string
         """
         self.row0_invariant(target_col)
-        row, col = self.current_position(0, target_col)
         moves = 'ld'
-        if row == 0 and col == target_col - 1:
-            self.update_puzzle(moves)
+        self.update_puzzle(moves)
+        row, col = self.current_position(0, target_col)
+        if row == 0 and col == target_col:
             return moves
         moves += move(1, target_col - 1, row, col) + 'urdlurrdluldrruld'
-        self.update_puzzle(moves)
+        self.update_puzzle(moves[2:])
         self.row0_invariant(target_col)
         return moves
 
@@ -258,9 +260,18 @@ class Puzzle:
         Solve the upper left 2x2 part of the puzzle
         Updates the puzzle and returns a move string
         """
-        moves = 'ul' + 'rdlu' * 2
-        self.update_puzzle(moves)
-        return moves
+        moves = ''
+        first_step = ''
+        if self.get_number(1, 1) == 0:
+            first_step += 'ul'
+            self.update_puzzle(first_step)
+            if (0, 1) == self.current_position(0, 1) and (1, 1) == self.current_position(1, 1):
+                return first_step
+
+            moves += 'rdlu' if self.get_number(0, 1) < self.get_number(1, 0) else 'drul'
+            self.update_puzzle(moves)
+
+        return first_step + moves
 
     def solve_puzzle(self):
         """
