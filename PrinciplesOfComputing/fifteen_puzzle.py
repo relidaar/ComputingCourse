@@ -178,7 +178,7 @@ class Puzzle:
         """
         assert self.lower_row_invariant(target_row, target_col)
         row, col = self.current_position(target_row, target_col)
-        moves = position_tile(target_row, target_col, row, col)
+        moves = move(target_row, target_col, row, col)
         self.update_puzzle(moves)
         assert self.lower_row_invariant(target_row, target_col - 1)
         return moves
@@ -195,7 +195,7 @@ class Puzzle:
             moves += 'r' * (self._width - 2)
             self.update_puzzle(moves)
             return moves
-        moves += position_tile(target_row - 1, 1, row, col) + 'ruldrdlurdluurddlur' + 'r' * (self._width - 2)
+        moves += move(target_row - 1, 1, row, col) + 'ruldrdlurdluurddlur' + 'r' * (self._width - 2)
         self.update_puzzle(moves)
         assert self.lower_row_invariant(target_row - 1, self.get_width() - 1)
         return moves
@@ -226,16 +226,29 @@ class Puzzle:
         Solve the tile in row zero at the specified column
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        self.row0_invariant(target_col)
+        row, col = self.current_position(0, target_col)
+        moves = 'ld'
+        if row == 0 and col == target_col - 1:
+            self.update_puzzle(moves)
+            return moves
+        moves += move(1, target_col - 1, row, col) + 'urdlurrdluldrruld'
+        self.update_puzzle(moves)
+        self.row0_invariant(target_col)
+        return moves
 
     def solve_row1_tile(self, target_col):
         """
         Solve the tile in row one at the specified column
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        self.row1_invariant(target_col)
+        row, col = self.current_position(1, target_col)
+        moves = move(1, target_col, row, col)
+        moves += 'ur'
+        self.update_puzzle(moves)
+        self.row1_invariant(target_col)
+        return moves
 
     ###########################################################
     # Phase 3 methods
@@ -257,7 +270,7 @@ class Puzzle:
         return ""
 
 
-def position_tile(target_row, target_col, row, col):
+def move(target_row, target_col, row, col):
     '''
     Moves a tile from (row, col) to (target row, target col)
     '''
@@ -284,5 +297,7 @@ def position_tile(target_row, target_col, row, col):
 #     import poc_fifteen_gui
 # except ImportError:
 #     from libs import poc_fifteen_gui
-
+#
+# obj = Puzzle(3, 3, [[4, 1, 0], [2, 3, 5], [6, 7, 8]])
+# poc_fifteen_gui.FifteenGUI(obj)
 # poc_fifteen_gui.FifteenGUI(Puzzle(2, 2))
